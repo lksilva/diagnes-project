@@ -47,3 +47,5 @@ CREATE TABLE `diagnes-db`.`patient` (
   PRIMARY KEY (`id`),
   UNIQUE INDEX `id_UNIQUE` (`id` ASC));
 ```
+
+Agora basta configurar o arquivo `app/config.db.js` para ajustar as configurações de acesso ao banco de dados
