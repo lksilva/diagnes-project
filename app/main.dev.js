@@ -12,6 +12,9 @@
  */
 import { app, BrowserWindow } from 'electron';
 import MenuBuilder from './menu';
+import mysql from 'mysql';
+import { dialog, shell } from 'electron';
+import configdb from './config.db';
 
 let mainWindow = null;
 
@@ -65,6 +68,8 @@ app.on('ready', async () => {
     height: 728
   });
 
+  mainWindow.setFullScreen(true);
+
   mainWindow.loadURL(`file://${__dirname}/app.html`);
 
   // @TODO: Use 'ready-to-show' event
@@ -83,4 +88,21 @@ app.on('ready', async () => {
 
   const menuBuilder = new MenuBuilder(mainWindow);
   menuBuilder.buildMenu();
+
+  const connection = mysql.createConnection(configdb);
+
+  connection.connect((err) => {
+    if (err) {
+      dialog.showErrorBox('ERRO DE CONEXÃO', 'Houve uma falha ao tentar conectar-se com o banco de dados.');
+      console.log('Error DB connection');
+      console.log(err.code);
+      console.log(err.fatal);
+    } else {
+      console.log('Connected to MYSQL DB');
+    }
+  });
+
+  connection.end(() => {
+    console.log('Connection closed');
+  });
 });
