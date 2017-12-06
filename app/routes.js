@@ -9,7 +9,7 @@ export default () => (
   <App>
     <Switch>
       <Route path="/register" component={RegisterPage} />
-      <Route path="/" component={PatientListPage} />
+      <Route path="/" component={PatientListPage} active />
     </Switch>
   </App>
 );
