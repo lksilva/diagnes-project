@@ -63,6 +63,16 @@ export function updatePatient(patient: any) {
   };
 }
 
+export function deletePatient(id: any) {
+  return async (dispatch: (action: actionType) => void) => {
+    dispatch(patientNotification({ sucess: null }));
+    dispatch(handleLogin(true));
+    const response = await deletePatientDB(id);
+    dispatch(handleLogin(false));
+    dispatch(patientNotification(response));
+  };
+}
+
 export function savePatient(patient: any) {
   return async (dispatch: (action: actionType) => void) => {
     dispatch(patientNotification({ sucess: null }));
@@ -105,6 +115,28 @@ function updatePatientDB(patient: any) {
         resolve({ sucess: false });
       } else {
         console.log('Editando paciente', result);
+        resolve({ sucess: true });
+      }
+    });
+
+    connection.end(() => {
+      console.log('Connection closed');
+    });
+  });
+}
+
+function deletePatientDB(id: any) {
+  return new Promise((resolve) => {
+    const sql = `DELETE FROM patient WHERE id = ${id}`;
+
+    const connection = mysql.createConnection(configdb);
+
+    connection.query(sql, (err, result) => {
+      if (err) {
+        console.error(err);
+        resolve({ sucess: false });
+      } else {
+        console.log('Removido pacient', result);
         resolve({ sucess: true });
       }
     });

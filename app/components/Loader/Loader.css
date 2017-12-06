@@ -1,9 +1,9 @@
-.userLoader {
+.patientLoader {
   text-align: center;
   padding-top: 100px;
 }
 
-.userLoader label {
+.patientLoader label {
   display: block;
   margin-top: 15px;
   color: #342e2e;

@@ -6,7 +6,7 @@ import CircularProgress from 'material-ui/CircularProgress';
 class Loader extends Component {
   render() {
     return (
-      <div className={styles.userLoader}>
+      <div className={styles.patientLoader}>
         <CircularProgress size={80} thickness={5} />
         <label>Carregando...</label>
       </div>

@@ -17,9 +17,11 @@ import EditPatientForm from '../MutationPatient/EdtirPatientForm';
 import { SubmissionError } from 'redux-form';
 import Snackbar from 'material-ui/Snackbar';
 import { ValidatePatientForm, ConvertDatePTBR } from '../../utils/helpers';
+import ActionDelete from 'material-ui/svg-icons/action/delete';
+import { FlatButton as MuiFlatButton } from 'material-ui';
 
 const TableExampleSimple = (props) => {
-  const { patients, handleEdit, previous, next, page, totalPage } = props;
+  const { patients, handleEdit, handleDelete, previous, next, page, totalPage } = props;
 
   return (
     <Table allRowsSelected={false} selectable={false}>
@@ -31,6 +33,7 @@ const TableExampleSimple = (props) => {
           <TableHeaderColumn>Data de nascimento</TableHeaderColumn>
           <TableHeaderColumn>Endereço</TableHeaderColumn>
           <TableHeaderColumn>Editar</TableHeaderColumn>
+          <TableHeaderColumn>Excluir</TableHeaderColumn>
         </TableRow>
       </TableHeader>
       <TableBody stripedRows displayRowCheckbox={false}>
@@ -49,7 +52,13 @@ const TableExampleSimple = (props) => {
                 </svg>
               </div>
             </TableRowColumn>
-
+            <TableRowColumn>
+              <MuiFlatButton
+onClick={(e) => handleDelete(patient)}
+                icon={<ActionDelete />}
+                style={{ padding: 2 }}
+              />
+            </TableRowColumn>
           </TableRow>
         ))}
       </TableBody>
@@ -67,6 +76,7 @@ class Patient extends Component {
     incrementPage: () => void,
     decrementPage: () => void,
     updatePatient: (any) => void,
+    deletePatient: (any) => void,
     isLoading: boolean,
     patients: any,
     page: number,
@@ -111,6 +121,13 @@ class Patient extends Component {
   handleEdit = (patient: any) => {
     this.setState({ patient, open: true });
   };
+
+  handleDelete = (patient: any) => {
+    const resp = confirm(`Tem certeza que deseja deletar pacient ${patient.name}`);
+    if (resp) {
+      this.props.deletePatient(patient.id);
+    }
+  }
 
   previous = () => {
     this.props.decrementPage();
@@ -157,7 +174,7 @@ class Patient extends Component {
         {isLoading ?
           <Loader /> :
           <div>
-            <TableExampleSimple patients={patients} handleEdit={(patient) => this.handleEdit(patient)} previous={this.previous} next={this.next} page={page} totalPage={totalPage} />
+            <TableExampleSimple patients={patients} handleEdit={(patient) => this.handleEdit(patient)} handleDelete={(patient) => this.handleDelete(patient)} previous={this.previous} next={this.next} page={page} totalPage={totalPage} />
             <Dialog
               title="Editar Pacient"
               modal={false}
@@ -173,14 +190,14 @@ class Patient extends Component {
         }
         <Snackbar
           open={this.state.confirmOpen}
-          message="Usuário editado com sucesso!"
-          autoHideDuration={4000}
+          message="Operação realizada com sucesso!"
+          autoHideDuration={2000}
           onRequestClose={this.handleRequestClose}
         />
         <Snackbar
           open={this.state.rejectOpen}
-          message="Falha ao tentar editar usuário"
-          autoHideDuration={4000}
+          message="Falha ao tentar realizar operação"
+          autoHideDuration={2000}
           style={{ background: 'red' }}
           onRequestClose={this.handleRequestCloseReject}
         />
