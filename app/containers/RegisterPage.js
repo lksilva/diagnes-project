@@ -1,11 +1,20 @@
 // @flow
-import React, { Component } from 'react';
-import Register from '../components/Register/Register';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import MutationPatient from '../components/MutationPatient/MutationPatient';
+import * as PatientActions from '../actions/patient';
 
-export default class RegisterPage extends Component {
-  render() {
-    return (
-      <Register />
-    );
-  }
+function mapStateToProps(state) {
+  const patient = state.router.location.state ? state.router.location.state.editPatient : null;
+  return {
+    insertResponse: state.patient.insertResponse,
+    isLoading: state.patient.isLoading,
+    patientToEdit: patient
+  };
 }
+
+function mapDispatchToProps(dispatch) {
+  return bindActionCreators(PatientActions, dispatch);
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(MutationPatient);

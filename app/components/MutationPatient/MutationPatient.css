@@ -1,0 +1,20 @@
+.wraperMutationPatient {
+  display: flex;
+  flex-flow: row wrap;
+  text-align: center;
+  justify-content: center;
+}
+
+.wraperMutationPatient > * {
+  padding: 15px;
+  flex: 1 auto;
+}
+
+.wraperMutationPatient header, .wraperMutationPatient footer {
+  width: 100%;
+}
+
+.wraperMutationPatient aside {
+  text-align: left;
+  max-width: 330px;
+}
