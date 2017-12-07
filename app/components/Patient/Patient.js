@@ -54,7 +54,7 @@ const TableExampleSimple = (props) => {
             </TableRowColumn>
             <TableRowColumn>
               <MuiFlatButton
-onClick={(e) => handleDelete(patient)}
+                onClick={(e) => handleDelete(patient)}
                 icon={<ActionDelete />}
                 style={{ padding: 2 }}
               />
@@ -166,6 +166,10 @@ class Patient extends Component {
     });
   }
 
+  renderNoResults = () => (
+    <h2 className={styles.labelWarn}>Não há nenhum paciente cadastrado! </h2>
+    )
+
   render() {
     const { isLoading, patients, page, totalPage } = this.props;
 
@@ -174,7 +178,10 @@ class Patient extends Component {
         {isLoading ?
           <Loader /> :
           <div>
-            <TableExampleSimple patients={patients} handleEdit={(patient) => this.handleEdit(patient)} handleDelete={(patient) => this.handleDelete(patient)} previous={this.previous} next={this.next} page={page} totalPage={totalPage} />
+            {patients.length ?
+              <TableExampleSimple patients={patients} handleEdit={(patient) => this.handleEdit(patient)} handleDelete={(patient) => this.handleDelete(patient)} previous={this.previous} next={this.next} page={page} totalPage={totalPage} /> :
+              this.renderNoResults()
+            }
             <Dialog
               title="Editar Pacient"
               modal={false}
